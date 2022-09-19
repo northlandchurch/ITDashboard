@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+
+<head>
+	
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+	<title>Northland IT Dashboard</title>
+
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+	
+	<style>
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+
+
+.c-row {
+  display: flex;
+/*  flex-wrap: wrap;	*/
+  padding: 0;
+}
+
+/* Create four equal columns that sits next to each other */
+.column1 {
+  flex: 66%;
+  max-width: 66%;
+  padding: 0;
+}
+.column2 {
+  flex: 33%;
+  max-width: 33%;
+  padding: 0;
+}
+
+.it-border {
+  border: 4px solid rgba(0,0,0,.5);
+}
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+@media (max-width: 800px) {
+  .column1 {
+    flex: 100%;
+    max-width: 100%;
+  }
+  .column2 {
+    flex: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media (max-width: 600px) {
+  .column1 {
+    flex: 100%;
+    max-width: 100%;
+  }
+  .column2 {
+    flex: 100%;
+    max-width: 100%;
+  }
+}		
+	</style>
+</head>
+
+<body class="">
+
+<!-- Photo Grid -->
+<div class="c-row"> 
+
+<div class="column1" style="">
+	<div class="card bg-light it-border " style="height:66vh">
+		<div class="card-header text-white bg-danger">Device Grid</div>
+		<div class="card-body ">
+			<iframe src="http://prtg.northlandcc.net/public/mapshow.htm?id=6143&mapid=F9886ED7-F009-43FB-AF68-A1D98489E1B0"
+				style="position:absolute; top:0px; left:0px; width:100%; height:100%; border: none; overflow: hidden;">
+			</iframe>
+		</div>
+	</div>
+
+	<div class="card-deck" style="height:33vh;">
+		<div class="card bg-light it-border mr-0" style="width:50%">
+			<div class="card-header text-white bg-danger">Top Connections</div>	
+			<div class="card-body">
+				<iframe src="http://prtg.northlandcc.net/public/mapshow.htm?id=6234&mapid=BAB09623-9FEB-4502-B9C4-B03DED0A7556" 
+					style="position:absolute; top:0px; left:0px; width:100%; height:100%; border: none; overflow: hidden;">
+				</iframe>
+<!--		
+				<iframe src="http://prtg.northlandcc.net/public/mapshow.htm?id=6145&mapid=4AA71577-DA93-44FB-B2C5-1C7BB6D57499" 
+					style="position:absolute; top:0px; left:0px; width:100%; height:100%; border: none; overflow: hidden;">
+				</iframe>
+-->			
+			</div>
+		</div>
+
+		<!-- Section for Weather Radar -->
+		<div class="card bg-light it-border ml-0" style="width:50%">
+			<div class="card-header text-white bg-danger">Internet Traffic</div>
+			<div class="card-body">
+				<iframe src="http://prtg.northlandcc.net/public/mapshow.htm?id=6230&mapid=46D79C8F-80EA-4466-A715-CB271A577696" 
+					style="position:absolute; top:0px; left:0px; width:100%; height:100%; border: none; overflow: hidden;">
+				</iframe>
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+<div class="column2">
+<!--	
+	<div class="card bg-light it-border" style="height:33vh">
+		<div class="card-header text-white bg-danger">Empty!</div>
+		<div class="card-body ">
+		</div>
+	</div>
+-->
+	<div class="card bg-dark it-border" style="height:33vh">
+		<img src="http://10.8.0.150/mjpg/video.mjpg" style="position:absolute; top:0px; left:0px; width:100%; height:100%; border: none; overflow: hidden; object-fit: scale-down;"> 	
+<!--		<img src="http://root:nc32750c@10.8.0.150/mjpg/video.mjpg" style="position:absolute; top:0px; left:0px; width:100%; height:100%; border: none; overflow: hidden; object-fit: scale-down;"> 	-->
+	</div>
+	
+	<div class="card bg-light it-border" style="height:33vh">
+		<iframe width="100%" height="100%"
+			src="https://embed.windy.com/embed2.html?lat=28.688&lon=-81.477&detailLat=28.902&detailLon=-81.476&zoom=8&level=surface&overlay=radar&product=radar&menu=&message=true&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-6"
+			frameborder="0">
+		</iframe>					
+	</div>
+
+	<div class="card bg-light it-border" style="height:33vh">
+		<div class="card-header text-white bg-danger">Temperature Monitoring</div>
+		<div class="card-body ">
+			<iframe src="/TempSensor/index-simple-dark.html" 	
+				style="position:absolute; top:0px; left:0px; width:100%; height:100%; border: none; overflow: hidden;">
+			</iframe>
+		</div>
+	</div>
+</div> 
+
+</div>
+
+
+
+
+<script>
+	
+	$(document).ready(function(){	
+
+//		GetInitialData();
+	
+		$("#refresh").click(function() {
+			$(".alert").hide();
+			GetPCOData();
+		});
+
+		$("#addDevice").click(function() {
+			$(".alert").hide();
+			AddDevice();
+		});
+	});
+
+	
+
+</script>
+</body>
+
+</html>

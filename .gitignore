@@ -1,0 +1,8 @@
+# ignore all config.php files
+config.php
+config-del.php
+test_mysql.php
+
+# ignore all archived files
+*.zip
+*.save

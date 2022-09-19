@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>Coding Train: Fetch and Graph CSV</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>	
+	<script src="utils.js"></script>
+</head>
+<body>
+	<div style="width:75%;">
+		<canvas id="canvas"></canvas>
+	</div>
+	<br>
+	<br>
+	<button id="retrieveData">Retrieve Data</button>
+	<button id="addData">Add Data</button>
+	<button id="stopData">Stop Data</button>
+	<button id="randomizeData">Randomize Data</button>
+	<button id="addDataset">Add Dataset</button>
+	<button id="removeDataset">Remove Dataset</button>
+	<button id="removeData">Remove Data</button>
+	<script>
+	var config = {
+		type: 'line',
+		data: {
+			labels: [],
+			datasets: [],
+		},
+		options: {
+			responsive: true,
+			title: {
+				display: true,
+				text: 'Northland Temperature'
+			},
+			tooltips: {
+				mode: 'index',
+				intersect: false,
+			},
+			hover: {
+				mode: 'nearest',
+				intersect: true
+			},
+			scales: {
+				xAxes: [{
+					display: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'Date'
+					}
+				}],
+				yAxes: [{
+					display: true,
+					ticks: {
+						callback: function(value, index, values) {
+							return value + '°';
+						}
+					},
+					scaleLabel: {
+						display: true,
+						labelString: 'Temperature (F)'
+					}
+				}]
+			},
+		}
+	};
+
+	var colorNames = Object.keys(window.chartColors);
+
+	window.onload = function() {
+		var ctx = document.getElementById('canvas').getContext('2d');
+		window.myLine = new Chart(ctx, config);
+	};
+
+	document.getElementById('retrieveData').addEventListener('click', function() {
+
+		getData();
+
+	});
+
+	
+	async function getData() 
+	{
+		const url = "getRecentTemperature.php";
+
+		const response = await fetch(url);
+
+		if (response.ok) { // if HTTP-status is 200-299
+		  // get the response body (the method explained below)
+			const json = await response.json();
+			const values = json.values;
+			const labeldate = json.labeldate;
+			
+			console.log("Label Date: " + labeldate);
+			config.data.labels.push(labeldate);
+			
+			values.forEach(device => {
+				var colorName = colorNames[config.data.datasets.length % colorNames.length];
+				var newColor = window.chartColors[colorName];
+				var newDataset = {
+					label: device.devName,
+					backgroundColor: newColor,
+					borderColor: newColor,
+					data: [],
+					fill: false
+				};
+			
+				const temp = device.temperature;
+				const datetime = device.datetime;
+				console.log(device.devName + " (" + device.devId +  ") - " + device.temperature + " @ " + device.datetime );
+				newDataset.data.push(temp);
+
+
+				config.data.datasets.push(newDataset);
+			});
+
+		} else {
+			alert("HTTP-Error: " + response.status);
+		}
+		
+		window.myLine.update();
+		
+	}		
+
+
+	async function addData() 
+	{
+		const url = "getRecentTemperature.php";
+
+		const response = await fetch(url);
+
+		if (response.ok) { // if HTTP-status is 200-299
+		  // get the response body (the method explained below)
+			const json = await response.json();
+			const values = json.values;
+			const labeldate = json.labeldate;
+			
+			console.log("Label Date: " + labeldate);
+			config.data.labels.push(labeldate);
+			
+			values.forEach(device => {
+				for (let i=0; i<config.data.datasets.length; i++)
+				{
+					if (config.data.datasets[i].label == device.devName)
+					{	
+						console.log(device.devName + " (" + device.devId +  ") - " + device.temperature + " @ " + device.datetime );
+						config.data.datasets[i].data.push(device.temperature);
+					}
+				}
+			});
+
+		} else {
+			alert("HTTP-Error: " + response.status);
+		}
+		
+		window.myLine.update();
+		
+	}		
+	
+	document.getElementById('randomizeData').addEventListener('click', function() {
+		config.data.datasets.forEach(function(dataset) {
+			dataset.data = dataset.data.map(function() {
+				return randomScalingFactor();
+			});
+
+		});
+
+		window.myLine.update();
+	});
+
+	document.getElementById('addDataset').addEventListener('click', function() {
+		var colorName = colorNames[config.data.datasets.length % colorNames.length];
+		var newColor = window.chartColors[colorName];
+		var newDataset = {
+			label: 'Dataset ' + config.data.datasets.length,
+			backgroundColor: newColor,
+			borderColor: newColor,
+			data: [],
+			fill: false
+		};
+
+		for (var index = 0; index < config.data.labels.length; ++index) {
+			newDataset.data.push(randomScalingFactor());
+		}
+
+		config.data.datasets.push(newDataset);
+		window.myLine.update();
+	});
+
+	var myTimer;
+	document.getElementById('addData').addEventListener('click', function() {
+		
+		myTimer = setInterval(addData, 6000);;
+/*	
+		if (config.data.datasets.length > 0) {
+			var month = MONTHS[config.data.labels.length % MONTHS.length];
+			config.data.labels.push(month);
+
+			config.data.datasets.forEach(function(dataset) {
+				dataset.data.push(randomScalingFactor());
+			});
+
+			window.myLine.update();
+		}
+*/		
+	});
+
+	document.getElementById('stopData').addEventListener('click', function() {
+		clearInterval(myTimer);
+	});
+
+	document.getElementById('removeDataset').addEventListener('click', function() {
+		config.data.datasets.splice(0, 1);
+		window.myLine.update();
+	});
+
+	document.getElementById('removeData').addEventListener('click', function() {
+		config.data.labels.splice(0, 1); // remove the label first
+
+		config.data.datasets.forEach(function(dataset) {
+			dataset.data.shift();
+		});
+		
+/*
+		config.data.labels.splice(-1, 1); // remove the label first
+
+		config.data.datasets.forEach(function(dataset) {
+			dataset.data.pop();
+		});
+*/
+		window.myLine.update();
+	});
+	
+	async function chartIt()
+	{
+		const data = await getData();
+		
+		var colorName = colorNames[config.data.datasets.length % colorNames.length];
+		var newColor = window.chartColors[colorName];
+		var newDataset = {
+			label: 'Dataset ' + config.data.datasets.length,
+			backgroundColor: newColor,
+			borderColor: newColor,
+			data: [],
+			fill: false
+		};
+
+		for (var index = 0; index < config.data.labels.length; ++index) {
+			newDataset.data.push(randomScalingFactor());
+		}
+
+		config.data.datasets.push(newDataset);
+		
+		window.myLine.update();
+	}
+
+	</script>
+</body>
+</html>
+	
