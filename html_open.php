@@ -1,5 +1,5 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
 
@@ -7,7 +7,7 @@
 	<!-- Visit https://bootswatch.com/ for more themes -->
 	<link rel="stylesheet" href="/css/bootswatch/dist/slate/bootstrap.min.css">
 
-	<title>NACD IT Dashboard</title>
+	<title>IT Dashboard</title>
 
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
