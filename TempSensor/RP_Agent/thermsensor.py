@@ -41,7 +41,7 @@ def read_temp():
 
 #Write sensor data to sql. CG 6/1/2020
 try:
-    db = MySQLdb.connect(host="10.7.0.150", user="admin", passwd="password",db="nacdtempsensor")
+    db = MySQLdb.connect(host="10.7.0.150", user="aaaaa", passwd="ppppp",db="nacdtempsensor")
     c=db.cursor()
     temp = read_temp()
     dtemp = Decimal(temp)
