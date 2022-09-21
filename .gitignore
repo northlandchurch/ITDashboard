@@ -6,3 +6,5 @@ test_mysql.php
 # ignore all archived files
 *.zip
 *.save
+*.swp
+
